@@ -1,8 +1,10 @@
+@import url("switcher.css");
+
 .wrapper {
-    min-height: calc(100vh - 15px);
-    margin: 15px auto 0;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-.btn {
-    cursor: pointer !important;
+.bg-dark {
+    color: white;
 }
