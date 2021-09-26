@@ -1,4 +1,8 @@
 "use strict";
+let _currentId = 100;
+
+const currentTasks_container = document.querySelector("#currentTasks"),
+    completedTasks_container = document.querySelector("#completedTasks");
 
 const priorities = {
     h: "High",
@@ -7,23 +11,36 @@ const priorities = {
 }
 
 class Task {
-
-    constructor(title, text, priority, color, date = new Date()) {
+    constructor(title, text, isCompleted = false, priority = "l", color = "white", date = new Date()) {
+        this.id = _currentId++;
         this.title = title;
         this.text = text;
         this.priority = priority;
         this.color = color;
         this.date = date;
-        this.isCompleted = false;
-
-
-
+        this.isCompleted = isCompleted;
     }
 
     render() {
-        const newDiv = document.createElement("div");
-        newDiv.innerHTML = `
-        <li class="list-group-item d-flex w-100 mb-2">
+        const html = document.createElement("li");
+        const btnHtml = this.isCompleted ?
+            `
+            <div class="dropdown-menu p-2 flex-column" aria-labelledby="dropdownMenuItem1">
+                <button type="button" class="btn_completeTask btn btn-success w-100" data-id=${this.id}>Not Complete</button>
+                <button type="button" class="btn_deleteTask btn btn-danger w-100 my-2" data-id=${this.id}>Delete</button>
+            </div>
+            `
+            :
+            `
+            <div class="dropdown-menu p-2 flex-column" aria-labelledby="dropdownMenuItem1">
+                <button type="button" class="btn_completeTask btn btn-success w-100" data-id=${this.id}>Complete</button>
+                <button type="button" class="btn_editTask btn btn-info w-100 my-2" data-id=${this.id}>Edit</button>
+                <button type="button" class="btn_deleteTask btn btn-danger w-100" data-id=${this.id}>Delete</button>
+            </div>
+        `;
+
+        html.classList.add("list-group-item", "d-flex", "w-100", "mb-2");
+        html.innerHTML = `
             <div class="w-100 mr-2">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">${this.title}</h5>
@@ -40,32 +57,26 @@ class Task {
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-v"></i>
                 </button>
-                <div class="dropdown-menu p-2 flex-column" aria-labelledby="dropdownMenuItem1">
-                    <button type="button" class="btn btn-success w-100">Complete</button>
-                    <button type="button" class="btn btn-info w-100 my-2">Edit</button>
-                    <button type="button" class="btn btn-danger w-100">Delete</button>
-                </div>
+                ${btnHtml}
             </div>
-        </li>
         `;
-        return newDiv;
+        return html;
     }
 }
 
-const task = new Task("Main", "sdfadfsdf", "h", "any");
-document.querySelector("#currentTasks").append(task.render());
-document.querySelector("#currentTasks").append(task.render());
-document.querySelector("#currentTasks").append(task.render());
-document.querySelector("#currentTasks").append(task.render());
-document.querySelector("#currentTasks").append(task.render());
-document.querySelector("#currentTasks").append(task.render());
-document.querySelector("#currentTasks").append(task.render());
 
+function renderTasks(arr) {
+    arr.forEach(task => {
+        if (!task.isCompleted) {
+            currentTasks_container.append(task.render())
+        } else {
+            completedTasks_container.append(task.render());
+        }
+    });
+}
 
 
 function formatDate(date) {
-
-    console.log(date.getMinutes());
 
     let hh = date.getHours();
     if (hh < 10) hh = '0' + hh;
