@@ -8,21 +8,46 @@ const priorities = {
     h: "High",
     m: "Medium",
     l: "Low"
-}
+};
+
+const themes = {
+    default: {
+        color: "#000",
+        background: "#fff"
+    },
+    blue: {
+        color: "#3D88F6",
+        background: "#C3D7F6"
+    },
+    red: {
+        color: "#E96862",
+        background: "#E9B6B3"
+    },
+    green: {
+        color: "#68B146",
+        background: "#9CB192"
+    },
+    purple: {
+        color: "#8C50BF",
+        background: "#E8D9F6"
+    }
+};
 
 class Task {
-    constructor(title, text, isCompleted = false, priority = "l", color = "white", date = new Date()) {
+    constructor(title, text, isCompleted = false, priority = "l", theme = "default", date = new Date()) {
         this.id = _currentId++;
         this.title = title;
         this.text = text;
         this.priority = priority;
-        this.color = color;
+        this.theme = theme;
         this.date = date;
         this.isCompleted = isCompleted;
     }
 
     render() {
         const html = document.createElement("li");
+        html.classList.add("list-group-item", "d-flex", "w-100", "mb-2");
+
         const btnHtml = this.isCompleted ?
             `
             <div class="dropdown-menu p-2 flex-column" aria-labelledby="dropdownMenuItem1">
@@ -39,7 +64,11 @@ class Task {
             </div>
         `;
 
-        html.classList.add("list-group-item", "d-flex", "w-100", "mb-2");
+        html.style.cssText = `
+            color: ${themes[this.theme].color};
+            background-color: ${themes[this.theme].background};
+        `;
+
         html.innerHTML = `
             <div class="w-100 mr-2">
                 <div class="d-flex w-100 justify-content-between">
