@@ -17,9 +17,9 @@ function getStorageTasks() {
     finally {
         if (!jsonTasks) {
             jsonTasks = [
-                new Task("Homework", "Do my homework", false, "h"),
-                new Task("Breakfast", "Have a nice breakfast", false, "m"),
-                new Task("Music", "Listen to music", false, "l")
+                new Task("Homework", "Do my homework", false, "h", "white", new Date(2021, 6, 21)),
+                new Task("Breakfast", "Have a nice breakfast", false, "m", "white", new Date(2021, 7, 21)),
+                new Task("Music", "Listen to music", false, "l", "white", new Date(2021, 8, 21))
             ]
         }
         jsonTasks.forEach(task => {
@@ -32,7 +32,8 @@ function getStorageTasks() {
 
 
 
-function updateStorageTasks(tasks) {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+function updateStorageTasks(tasks_to_update) {
+    localStorage.setItem("tasks", JSON.stringify(tasks_to_update));
+    tasks = tasks_to_update;
+    renderTasks();
 }
-

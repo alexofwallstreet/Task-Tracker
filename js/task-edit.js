@@ -4,14 +4,7 @@ const btn_editTask = document.querySelector("#btn_editTask"),
     input_text_edit = document.querySelector("#inputText_edit");
 
 
-document.querySelectorAll(".btn_editTask").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const taskId = btn.dataset.id;
-        updateEditModal(taskId);
-    });
-});
-
-btn_editTask.addEventListener("click", () => {
+btn_editTask.addEventListener("click", (e) => {
     const index = document.querySelector("#task_id_edit").value;
     const title = input_title_edit.value,
         text = input_text_edit.value,

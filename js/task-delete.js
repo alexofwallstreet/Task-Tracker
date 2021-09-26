@@ -1,16 +1,14 @@
-document.querySelectorAll(".btn_deleteTask").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const taskId = btn.dataset.id;
-        deleteTask(taskId);
-    });
-});
-
 function deleteTask(id) {
     const taskIndex = tasks.findIndex(task => task.id == id);
-    tasks = [
-        ...tasks.splice(0, taskIndex),
-        ...tasks.splice(taskIndex + 1)
+    console.log("before");
+    console.log(tasks);
+    const newTasks = [
+        ...tasks.slice(0, taskIndex),
+        ...tasks.slice(taskIndex + 1)
     ];
-    updateStorageTasks(tasks);
-    location.reload();
+    console.log("after");
+
+    console.log(newTasks);
+
+    updateStorageTasks(newTasks);
 }

@@ -2,7 +2,9 @@
 
 let tasks = getStorageTasks();
 
-renderTasks(tasks);
+let showTasks = getTasksToShow(tasks);
+
+renderTasks(showTasks);
 
 
 

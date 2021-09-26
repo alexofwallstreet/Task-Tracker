@@ -65,14 +65,22 @@ class Task {
 }
 
 
-function renderTasks(arr) {
-    arr.forEach(task => {
+function renderTasks() {
+
+    showTasks = getTasksToShow(tasks);
+
+    currentTasks_container.innerHTML = "";
+    completedTasks_container.innerHTML = "";
+
+    showTasks.forEach(task => {
         if (!task.isCompleted) {
             currentTasks_container.append(task.render())
         } else {
             completedTasks_container.append(task.render());
         }
     });
+
+    update_events();
 }
 
 
