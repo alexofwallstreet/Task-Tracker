@@ -34,7 +34,7 @@ class Task {
             `
             <div class="dropdown-menu p-2 flex-column" aria-labelledby="dropdownMenuItem1">
                 <button type="button" class="btn_completeTask btn btn-success w-100" data-id=${this.id}>Complete</button>
-                <button type="button" class="btn_editTask btn btn-info w-100 my-2" data-id=${this.id}>Edit</button>
+                <button type="button" class="btn_editTask btn btn-info w-100 my-2" data-id=${this.id} data-toggle="modal" data-target="#editModal">Edit</button>
                 <button type="button" class="btn_deleteTask btn btn-danger w-100" data-id=${this.id}>Delete</button>
             </div>
         `;
