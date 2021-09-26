@@ -109,7 +109,17 @@ function renderTasks() {
         }
     });
 
+    setHeaders();
     update_events();
+}
+
+
+function setHeaders() {
+    const toDo = tasks.filter(task => !task.isCompleted).length;
+    const completed = tasks.length - toDo;
+
+    document.querySelector("#toDo").innerHTML = `ToDo (${toDo})`;
+    document.querySelector("#completed").innerHTML = `Completed (${completed})`;
 }
 
 
