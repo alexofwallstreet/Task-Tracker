@@ -16,20 +16,20 @@ const themes = {
         background: "#fff"
     },
     blue: {
-        color: "#3D88F6",
+        color: "#3575D5",
         background: "#C3D7F6"
     },
     red: {
-        color: "#E96862",
-        background: "#E9B6B3"
+        color: "#C15751",
+        background: "#E9D4D3"
     },
     green: {
-        color: "#68B146",
-        background: "#9CB192"
+        color: "#3B6528",
+        background: "#DEFCD0"
     },
     purple: {
-        color: "#8C50BF",
-        background: "#E8D9F6"
+        color: "#571491",
+        background: "#EEE5F6"
     }
 };
 
