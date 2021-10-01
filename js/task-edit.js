@@ -6,6 +6,8 @@ const btn_editTask = document.querySelector("#btn_editTask"),
 
 
 btn_editTask.addEventListener("click", (e) => {
+    e.preventDefault();
+
     const index = document.querySelector("#task_id_edit").value;
     const title = input_title_edit.value,
         text = input_text_edit.value,
@@ -17,6 +19,7 @@ btn_editTask.addEventListener("click", (e) => {
     tasks[index].priority = priority;
     tasks[index].theme = theme;
     updateStorageTasks(tasks);
+    resetEditForm();
 });
 
 function updateEditModal(id) {
@@ -32,5 +35,12 @@ function updateEditModal(id) {
             break;
         }
     }
+}
 
+function resetEditForm() {
+    input_title_edit.value = "";
+    input_text_edit.value = "";
+    document.querySelector("input[name=priorityRadios_edit]").checked = true;
+    color_select_edit.selectedIndex = 0;
+    $('#editModal').modal('hide');
 }
