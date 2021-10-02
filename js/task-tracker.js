@@ -5,9 +5,9 @@ const currentTasks_container = document.querySelector("#currentTasks"),
     completedTasks_container = document.querySelector("#completedTasks");
 
 const priorities = {
-    h: "High",
-    m: "Medium",
-    l: "Low"
+    h: "high",
+    m: "medium",
+    l: "low"
 };
 
 const themes = {
@@ -30,18 +30,39 @@ const themes = {
     purple: {
         color: "#571491",
         background: "#EEE5F6"
+    },
+    low: {
+        color: "#3B6528",
+        background: "#DEFCD0"
+    },
+    medium: {
+        color: "#571491",
+        background: "#EEE5F6"
+    },
+    high: {
+        color: "#C15751",
+        background: "#E9D4D3"
     }
 };
 
 class Task {
-    constructor(title, text, isCompleted = false, priority = "l", theme = "default", date = new Date()) {
+    constructor(title, text, isCompleted = false, priority = "l", date = new Date()) {
         this.id = _currentId++;
         this.title = title;
         this.text = text;
-        this.priority = priority;
-        this.theme = theme;
+        this._priority = priority;
+        this.theme = priorities[priority];
         this.date = date;
         this.isCompleted = isCompleted;
+    }
+
+    get priority() {
+        return this._priority;
+    }
+
+    set priority(newPriotity) {
+        this._priority = newPriotity;
+        this.theme = priorities[newPriotity];
     }
 
     render() {
