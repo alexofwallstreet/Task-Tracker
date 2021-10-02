@@ -50,19 +50,9 @@ class Task {
         this.id = _currentId++;
         this.title = title;
         this.text = text;
-        this._priority = priority;
-        this.theme = priorities[priority];
+        this.priority = priority;
         this.date = date;
         this.isCompleted = isCompleted;
-    }
-
-    get priority() {
-        return this._priority;
-    }
-
-    set priority(newPriotity) {
-        this._priority = newPriotity;
-        this.theme = priorities[newPriotity];
     }
 
     render() {
@@ -86,8 +76,8 @@ class Task {
         `;
 
         html.style.cssText = `
-            color: ${themes[this.theme].color};
-            background-color: ${themes[this.theme].background};
+            color: ${themes[priorities[this.priority]].color};
+            background-color: ${themes[priorities[this.priority]].background};
         `;
 
         html.innerHTML = `
