@@ -1,58 +1,76 @@
 "use strict";
-let _currentId = 100;
 
 const currentTasks_container = document.querySelector("#currentTasks"),
     completedTasks_container = document.querySelector("#completedTasks");
 
-const priorities = {
-    h: "high",
-    m: "medium",
-    l: "low"
-};
-
-const themes = {
-    default: {
-        color: "#000",
-        background: "#fff"
-    },
-    blue: {
-        color: "#3575D5",
-        background: "#C3D7F6"
-    },
-    red: {
-        color: "#C15751",
-        background: "#E9D4D3"
-    },
-    green: {
-        color: "#3B6528",
-        background: "#DEFCD0"
-    },
-    purple: {
-        color: "#571491",
-        background: "#EEE5F6"
-    },
-    low: {
-        color: "#3B6528",
-        background: "#DEFCD0"
-    },
-    medium: {
-        color: "#571491",
-        background: "#EEE5F6"
-    },
-    high: {
-        color: "#C15751",
-        background: "#E9D4D3"
-    }
-};
 
 class Task {
     constructor(title, text, isCompleted = false, priority = "l", date = new Date()) {
-        this.id = _currentId++;
+        this.id = Task.getId();
         this.title = title;
         this.text = text;
         this.priority = priority;
         this.date = date;
         this.isCompleted = isCompleted;
+    }
+
+    static _currentId = 100;
+
+    static getId() {
+        return Task._currentId++;
+    }
+
+    static themes = {
+        default: {
+            color: "#000",
+            background: "#fff"
+        },
+        blue: {
+            color: "#3575D5",
+            background: "#C3D7F6"
+        },
+        red: {
+            color: "#C15751",
+            background: "#E9D4D3"
+        },
+        green: {
+            color: "#3B6528",
+            background: "#DEFCD0"
+        },
+        purple: {
+            color: "#571491",
+            background: "#EEE5F6"
+        },
+        low: {
+            color: "#3B6528",
+            background: "#DEFCD0"
+        },
+        medium: {
+            color: "#571491",
+            background: "#EEE5F6"
+        },
+        high: {
+            color: "#C15751",
+            background: "#E9D4D3"
+        }
+    };
+
+    static priorities = {
+        h: "high",
+        m: "medium",
+        l: "low"
+    };
+
+    getPriority() {
+        return Task.priorities[this.priority];
+    }
+
+    getTextColor() {
+        return Task.themes[this.getPriority()].color;
+    }
+
+    getBackgroundColor() {
+        return Task.themes[this.getPriority()].background;
     }
 
     render() {
@@ -76,8 +94,8 @@ class Task {
         `;
 
         html.style.cssText = `
-            color: ${themes[priorities[this.priority]].color};
-            background-color: ${themes[priorities[this.priority]].background};
+            color: ${this.getTextColor()};
+            background-color: ${this.getBackgroundColor()};
         `;
 
         html.innerHTML = `
@@ -85,8 +103,8 @@ class Task {
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">${this.title}</h5>
                     <div>
-                        <small class="mr-2">${priorities[this.priority]} priority</small>
-                        <small>${formatDate(this.date)}</small>
+                        <small class="mr-2">${Task.priorities[this.priority]} priority</small>
+                        <small>${Task.formatDate(this.date)}</small>
                     </div>
 
                 </div>
@@ -101,6 +119,26 @@ class Task {
             </div>
         `;
         return html;
+    }
+
+
+    static formatDate(date) {
+
+        let hh = date.getHours();
+        if (hh < 10) hh = '0' + hh;
+
+        let min = date.getMinutes();
+        if (min < 10) min = '0' + min;
+
+        let dd = date.getDate();
+        if (dd < 10) dd = '0' + dd;
+
+        let mm = date.getMonth() + 1;
+        if (mm < 10) mm = '0' + mm;
+
+        let yy = date.getFullYear();
+
+        return hh + ":" + min + " " + dd + '.' + mm + '.' + yy;
     }
 }
 
@@ -131,24 +169,4 @@ function setHeaders() {
 
     document.querySelector("#toDo").innerHTML = `ToDo (${toDo})`;
     document.querySelector("#completed").innerHTML = `Completed (${completed})`;
-}
-
-
-function formatDate(date) {
-
-    let hh = date.getHours();
-    if (hh < 10) hh = '0' + hh;
-
-    let min = date.getMinutes();
-    if (min < 10) min = '0' + min;
-
-    let dd = date.getDate();
-    if (dd < 10) dd = '0' + dd;
-
-    let mm = date.getMonth() + 1;
-    if (mm < 10) mm = '0' + mm;
-
-    let yy = date.getFullYear();
-
-    return hh + ":" + min + " " + dd + '.' + mm + '.' + yy;
 }
