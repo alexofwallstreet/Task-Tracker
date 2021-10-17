@@ -1,40 +1,72 @@
-function getStorageTasks() {
+import Task from "./task-tracker.js";
 
-    const tasks = [];
-
-    let jsonTasks = [];
-    //getting tasks from LocalStorage
-    try {
-        jsonTasks = JSON.parse(localStorage.getItem("tasks"));
-    }
-    catch {
-        jsonTasks = [
+export default class Storage {
+    generateFakeData() {
+        const fakeTasks = [
             new Task("Homework", "Do my homework", false, "h", new Date(2021, 6, 21)),
             new Task("Breakfast", "Have a nice breakfast", false, "m", new Date(2021, 7, 21)),
             new Task("Music", "Listen to music", false, "l", new Date(2021, 8, 21))
-        ]
+        ];
+
+        this.updateStorageTasks(fakeTasks);
+        return fakeTasks;
     }
-    finally {
-        if (!jsonTasks) {
-            jsonTasks = [
-                new Task("Homework", "Do my homework", false, "h", new Date(2021, 6, 21)),
-                new Task("Breakfast", "Have a nice breakfast", false, "m", new Date(2021, 7, 21)),
-                new Task("Music", "Listen to music", false, "l", new Date(2021, 8, 21))
-            ];
-            localStorage.setItem("tasks", jsonTasks);
+
+    updateStorageTasks(newTasks) {
+        localStorage.setItem("tasks", JSON.stringify(newTasks));
+    }
+
+    getStorageTasks() {
+
+        const tasks = [];
+        let jsonTasks = [];
+        jsonTasks = localStorage.getItem("tasks");//getting tasks from LocalStorage
+
+        if (jsonTasks === null) {
+            jsonTasks = this.generateFakeData();
+        } else {
+            jsonTasks = JSON.parse(jsonTasks);
         }
+
         jsonTasks.forEach(task => {
             tasks.push(new Task(task.title, task.text, task.isCompleted, task.priority, new Date(task.date)));
         });
+
+        return tasks;
     }
 
-    return tasks;
-}
+
+    getStorageSorting() {
+        let storageSort = localStorage.getItem("sort");
+        if (storageSort === null) {
+            storageSort = 0;
+            this.setStorageSorting(storageSort);
+        }
+        if (storageSort == 0) {
+            return 'asc';
+        }
+        return 'desc';
+    }
+
+    setStorageSorting(sort) {
+        localStorage.setItem('sort', sort);
+    }
 
 
+    getStorageTheme() {
+        let storageTheme = localStorage.getItem("theme");
+        if (storageTheme === null) {
+            storageTheme = 'light';
+            this.setStorageTheme(storageTheme);
+        }
+        if (storageTheme === 'light') {
+            return 'light';
+        }
+        return 'dark';
+    }
 
-function updateStorageTasks(tasks_to_update) {
-    localStorage.setItem("tasks", JSON.stringify(tasks_to_update));
-    tasks = tasks_to_update;
-    renderTasks();
+    setStorageTheme(theme) {
+        localStorage.setItem('theme', theme);
+    }
+
 }

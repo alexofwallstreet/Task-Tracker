@@ -1,10 +1,4 @@
-"use strict";
-
-const currentTasks_container = document.querySelector("#currentTasks"),
-    completedTasks_container = document.querySelector("#completedTasks");
-
-
-class Task {
+export default class Task {
     constructor(title, text, isCompleted = false, priority = "l", date = new Date()) {
         this.id = Task.getId();
         this.title = title;
@@ -140,33 +134,4 @@ class Task {
 
         return hh + ":" + min + " " + dd + '.' + mm + '.' + yy;
     }
-}
-
-
-function renderTasks() {
-
-    showTasks = getTasksToShow(tasks);
-
-    currentTasks_container.innerHTML = "";
-    completedTasks_container.innerHTML = "";
-
-    showTasks.forEach(task => {
-        if (!task.isCompleted) {
-            currentTasks_container.append(task.render())
-        } else {
-            completedTasks_container.append(task.render());
-        }
-    });
-
-    setHeaders();
-    update_events();
-}
-
-
-function setHeaders() {
-    const toDo = tasks.filter(task => !task.isCompleted).length;
-    const completed = tasks.length - toDo;
-
-    document.querySelector("#toDo").innerHTML = `ToDo (${toDo})`;
-    document.querySelector("#completed").innerHTML = `Completed (${completed})`;
 }
