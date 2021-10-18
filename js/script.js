@@ -137,11 +137,9 @@ function tooglePrimaryBtn(btn_primary, btn_secondary) {
 
 //------------------ Theme Switching Logic --------------------
 if (storage.getStorageTheme() === 'light') {
-    tooglePrimaryBtn(btn_asc, btn_desc);
     themeSwitcher.checked = false;
     setTheme("light");
 } else {
-    tooglePrimaryBtn(btn_desc, btn_asc);
     themeSwitcher.checked = true;
     setTheme("dark");
 }
