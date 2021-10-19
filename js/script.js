@@ -54,13 +54,13 @@ btn_addTask.addEventListener("click", (e) => {
 btn_editTask.addEventListener("click", (e) => {
     e.preventDefault();
 
-    const index = document.querySelector("#task_id_edit").value;
+    const id = document.querySelector("#task_id_edit").value;
     const title = input_title_edit.value,
         text = input_text_edit.value,
         priority = document.querySelector("input[name=priorityRadios_edit]:checked").value;
 
     if (title && text && priority) {
-        taskController.updateTask({ index, title, text, priority });
+        taskController.updateTask({ id, title, text, priority });
         storage.updateStorageTasks(taskController.getTasks());
         taskController.renderTasks(storage.getStorageSorting());
 
@@ -68,14 +68,12 @@ btn_editTask.addEventListener("click", (e) => {
     } else {
         alert("Please, input all fields!");
     }
-
-
 });
 
 
 function resetForm(form, modal) {
-    form.reset();
     $(modal).modal('hide');
+    form.reset();
 }
 
 

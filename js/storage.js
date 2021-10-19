@@ -38,14 +38,11 @@ export default class Storage {
 
     getStorageSorting() {
         let storageSort = localStorage.getItem("sort");
-        if (storageSort === null) {
+        if (!storageSort) {
             storageSort = 0;
             this.setStorageSorting(storageSort);
         }
-        if (storageSort == 0) {
-            return 'asc';
-        }
-        return 'desc';
+        return (storageSort == 0) ? "asc" : "desc";
     }
 
     setStorageSorting(sort) {
@@ -59,10 +56,7 @@ export default class Storage {
             storageTheme = 'light';
             this.setStorageTheme(storageTheme);
         }
-        if (storageTheme === 'light') {
-            return 'light';
-        }
-        return 'dark';
+        return (storageTheme === "light") ? "light" : "dark";
     }
 
     setStorageTheme(theme) {

@@ -22,32 +22,38 @@ export default class TaskController {
     updateTask(props) {
         const currentTasks = this.getTasks();
 
-        const { index, title, text, priority } = props;
-        currentTasks[index].title = title;
-        currentTasks[index].text = text;
-        currentTasks[index].priority = priority;
 
-        this.setTasks(currentTasks);
+        const { id, title, text, priority } = props;
+
+        const newTasks = currentTasks.map(task => {
+            if (task.id == id) {
+                task.title = title;
+                task.text = text;
+                task.priority = priority;
+            }
+            return task;
+        });
+
+        this.setTasks(newTasks);
     }
 
     completeTask(id) {
         const currentTasks = this.getTasks();
 
-        const taskIndex = currentTasks.findIndex(task => task.id == id);
-        currentTasks[taskIndex].isCompleted = !currentTasks[taskIndex].isCompleted;
-        this.setTasks(currentTasks);
+        const newTasks = currentTasks.map(task => {
+            if (task.id == id) {
+                task.isCompleted = !task.isCompleted;
+            }
+            return task;
+        });
+
+        this.setTasks(newTasks);
     }
 
     deleteTask(id) {
 
         const currentTasks = this.getTasks();
-        const taskIndex = currentTasks.findIndex(task => task.id == id);
-
-        const newTasks = [
-            ...currentTasks.slice(0, taskIndex),
-            ...currentTasks.slice(taskIndex + 1)
-        ];
-
+        const newTasks = currentTasks.filter(task => task.id != id);
         this.setTasks(newTasks);
     }
 
@@ -71,24 +77,19 @@ export default class TaskController {
     }
 
     sortTasks(arr, sort) {
-        if (sort === "asc") {
-            return arr.sort(sortByDateAsc);
-        }
-        return arr.sort(sortByDateDesc);
 
-        function sortByDateAsc(a, b) {
+        const sortArr = arr.sort(sortByDate);
+        return (sort === "asc") ? sortArr : sortArr.reverse();
+
+        function sortByDate(a, b) {
             return new Date(b.date) - new Date(a.date);
-        };
-
-        function sortByDateDesc(a, b) {
-            return new Date(a.date) - new Date(b.date);
         };
     }
 
     updateEditModal(id) {
         const currentTasks = this.getTasks();
         const taskIndex = currentTasks.findIndex(task => task.id == id);
-        document.querySelector("#task_id_edit").value = taskIndex;
+        document.querySelector("#task_id_edit").value = id;
         document.querySelector("#inputTitle_edit").value = currentTasks[taskIndex].title;
         document.querySelector("#inputText_edit").value = currentTasks[taskIndex].text;
         document.querySelector(`input[name=priorityRadios_edit][value=${currentTasks[taskIndex].priority}]`).checked = true;
