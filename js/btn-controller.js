@@ -60,18 +60,19 @@ export default class BtnController {
         if (target.classList.contains(completeClass)) {
             const taskId = target.dataset.id;
             this.taskController.completeTask(taskId);
-            this.updateTasks(this.taskController.tasks, this.storage.getStorageSorting());
         }
         else if (target.classList.contains(editClass)) {
             const taskId = target.dataset.id;
             this.taskController.updateEditModal(taskId);
-            this.updateTasks(this.taskController.tasks, this.storage.getStorageSorting());
         }
         else if (target.classList.contains(deleteClass)) {
             const taskId = target.dataset.id;
             this.taskController.deleteTask(taskId);
-            this.updateTasks(this.taskController.tasks, this.storage.getStorageSorting());
         }
+        else {
+            return null;
+        }
+        this.updateTasks(this.taskController.tasks, this.storage.getStorageSorting());
     }
 
     updateTasks = (tasks, sort) => {
