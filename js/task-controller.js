@@ -1,30 +1,40 @@
+import Task from "./task-tracker.js";
+
 export default class TaskController {
+
+    constructor(storage, current = "#currentTasks", completed = "#completedTasks", editForm = "#edit_form", addForm = "#addForm") {
+        this.currentTasks_container = document.querySelector(current);
+        this.completedTasks_container = document.querySelector(completed);
+        this.editModalForm = document.querySelector(editForm);
+        this.addModalForm = document.querySelectorAll(addForm);
+        this.storage = storage;
+        this.tasks = this.storage.getStorageTasks();
+        this.renderTasks(this.storage.getStorageSorting());
+    }
 
     _tasks = [];
 
-    currentTasks_container = document.querySelector("#currentTasks");
-    completedTasks_container = document.querySelector("#completedTasks");
-
-    setTasks(newTasks) {
+    set tasks(newTasks) {
         this._tasks = newTasks;
     }
 
-    getTasks() {
+    get tasks() {
         return this._tasks;
     }
 
+    createTask(title, text, priority) {
+        return new Task(title, text, false, priority);
+    }
+
     addTask(task) {
-        const newTasks = this.getTasks();
+        const newTasks = this.tasks;
         newTasks.push(task);
-        this.setTasks(newTasks);
+        this.tasks = newTasks;
     }
 
     updateTask(props) {
-        const currentTasks = this.getTasks();
-
-
+        const currentTasks = this.tasks;
         const { id, title, text, priority } = props;
-
         const newTasks = currentTasks.map(task => {
             if (task.id == id) {
                 task.title = title;
@@ -34,12 +44,11 @@ export default class TaskController {
             return task;
         });
 
-        this.setTasks(newTasks);
+        this.tasks = newTasks;
     }
 
     completeTask(id) {
-        const currentTasks = this.getTasks();
-
+        const currentTasks = this.tasks;
         const newTasks = currentTasks.map(task => {
             if (task.id == id) {
                 task.isCompleted = !task.isCompleted;
@@ -47,21 +56,18 @@ export default class TaskController {
             return task;
         });
 
-        this.setTasks(newTasks);
+        this.tasks = newTasks;
     }
 
     deleteTask(id) {
-
-        const currentTasks = this.getTasks();
+        const currentTasks = this.tasks;
         const newTasks = currentTasks.filter(task => task.id != id);
-        this.setTasks(newTasks);
+        this.tasks = newTasks;
     }
 
-    renderTasks(sort = "asc") {
-
-        const tasks = this.getTasks();
+    renderTasks(sort = 0) {
+        const tasks = this.tasks;
         const sortedTasks = this.sortTasks(tasks, sort);
-
         this.currentTasks_container.innerHTML = "";
         this.completedTasks_container.innerHTML = "";
 
@@ -77,27 +83,27 @@ export default class TaskController {
     }
 
     sortTasks(arr, sort) {
+        const sortArr = arr.sort(this._sortByDate);
+        return !sort ? sortArr : sortArr.reverse();
+    };
 
-        const sortArr = arr.sort(sortByDate);
-        return (sort === "asc") ? sortArr : sortArr.reverse();
-
-        function sortByDate(a, b) {
-            return new Date(b.date) - new Date(a.date);
-        };
-    }
+    _sortByDate(a, b) {
+        return new Date(b.date) - new Date(a.date);
+    };
 
     updateEditModal(id) {
-        const currentTasks = this.getTasks();
+        const currentTasks = this.tasks;
         const taskIndex = currentTasks.findIndex(task => task.id == id);
-        document.querySelector("#task_id_edit").value = id;
-        document.querySelector("#inputTitle_edit").value = currentTasks[taskIndex].title;
-        document.querySelector("#inputText_edit").value = currentTasks[taskIndex].text;
-        document.querySelector(`input[name=priorityRadios_edit][value=${currentTasks[taskIndex].priority}]`).checked = true;
+        const form = this.editModalForm;
+        form.elements.task_id.value = id;
+        form.inputTitle.value = currentTasks[taskIndex].title;
+        form.inputText.value = currentTasks[taskIndex].text;
+        form.priorityRadios.value = currentTasks[taskIndex].priority;
     }
 
     setHeaders() {
-        const toDo = this.getTasks().filter(task => !task.isCompleted).length;
-        const completed = this.getTasks().length - toDo;
+        const toDo = this.tasks.filter(task => !task.isCompleted).length;
+        const completed = this.tasks.length - toDo;
 
         document.querySelector("#toDo").innerHTML = `ToDo (${toDo})`;
         document.querySelector("#completed").innerHTML = `Completed (${completed})`;

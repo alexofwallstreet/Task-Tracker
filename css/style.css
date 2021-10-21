@@ -1,12 +1,18 @@
 @import url("switcher.css");
 
+:root {
+    --logo-light: #007bff;
+    --logo-dark: #ffffff;
+    --white-color: #ffffff;
+}
+
 .wrapper {
     min-height: 100vh;
     overflow-x: hidden;
 }
 
 .bg-dark {
-    color: white;
+    color: var(--white-color);
 }
 
 #logo {
@@ -16,11 +22,11 @@
 }
 
 .logo__white svg {
-    fill: #fff;
+    fill: var(--logo-dark);
 }
 
 .logo__blue svg {
-    fill: #007bff;
+    fill: var(--logo-light);
 }
 
 .navbar > .container {
@@ -33,7 +39,7 @@
 
 .btn_sort_asc,
 .btn_sort_desc {
-    border: 2px solid #fff !important;
+    border: 2px solid var(--border-white) !important;
 }
 
 @media (min-width: 768px) {

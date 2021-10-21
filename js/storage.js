@@ -20,9 +20,9 @@ export default class Storage {
 
         const tasks = [];
         let jsonTasks = [];
-        jsonTasks = localStorage.getItem("tasks");//getting tasks from LocalStorage
+        jsonTasks = localStorage.getItem("tasks");
 
-        if (jsonTasks === null) {
+        if (!jsonTasks) {
             jsonTasks = this.generateFakeData();
         } else {
             jsonTasks = JSON.parse(jsonTasks);
@@ -42,7 +42,7 @@ export default class Storage {
             storageSort = 0;
             this.setStorageSorting(storageSort);
         }
-        return (storageSort == 0) ? "asc" : "desc";
+        return +storageSort;
     }
 
     setStorageSorting(sort) {
@@ -52,7 +52,7 @@ export default class Storage {
 
     getStorageTheme() {
         let storageTheme = localStorage.getItem("theme");
-        if (storageTheme === null) {
+        if (!storageTheme) {
             storageTheme = 'light';
             this.setStorageTheme(storageTheme);
         }
