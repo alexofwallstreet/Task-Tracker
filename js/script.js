@@ -1,11 +1,15 @@
-"use strict";
+import Storage from "./storage.js";
+import TaskController from "./task-controller.js";
+import ThemeSwitcher from "./theme-switcher.js";
+import Sorting from "./sorting.js";
+import BtnController from "./btn-controller.js";
 
-let tasks = getStorageTasks();
+const storage = new Storage();
+const taskController = new TaskController(storage);
+const sorting = new Sorting(taskController, storage);
+const themeSwitcherClass = new ThemeSwitcher(storage);
+const btnController = new BtnController(taskController, storage);
 
-let showTasks = getTasksToShow(tasks);
-
-renderTasks(showTasks);
-
-
-
-
+document.querySelector("#dropdown .dropdown-menu").addEventListener("click", e => {
+    e.stopPropagation();
+})

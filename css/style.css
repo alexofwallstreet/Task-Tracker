@@ -1,10 +1,59 @@
 @import url("switcher.css");
 
+:root {
+    --logo-light: #007bff;
+    --logo-dark: #ffffff;
+    --white-color: #ffffff;
+}
+
 .wrapper {
     min-height: 100vh;
     overflow-x: hidden;
 }
 
 .bg-dark {
-    color: white;
+    color: var(--white-color);
+}
+
+#logo {
+    order: -1;
+    min-width: 100%;
+    margin-bottom: 20px;
+}
+
+.logo__white svg {
+    fill: var(--logo-dark);
+}
+
+.logo__blue svg {
+    fill: var(--logo-light);
+}
+
+.navbar > .container {
+    justify-content: center !important;
+}
+
+.container {
+    padding: 0 2rem !important;
+}
+
+.btn_sort_asc,
+.btn_sort_desc {
+    border: 2px solid var(--border-white) !important;
+}
+
+@media (min-width: 768px) {
+    #logo {
+        order: 0;
+        min-width: 20rem;
+        margin-bottom: 0px;
+    }
+
+    .container {
+        padding: 0 0 !important;
+    }
+
+    .navbar > .container {
+        justify-content: space-between !important;
+    }
 }

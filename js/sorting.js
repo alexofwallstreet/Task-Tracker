@@ -1,63 +1,38 @@
-const btn_asc = document.querySelector(".btn_sort_asc"),
-    btn_desc = document.querySelector(".btn_sort_desc");
+export default class Sorting {
 
-if (!localStorage.getItem('sort')) {
-    localStorage.setItem('sort', 0);
-    setPrimary(btn_asc, btn_desc);
-} else {
-    if (localStorage.getItem('sort') == 0) {
-        setPrimary(btn_asc, btn_desc);
-    } else if (localStorage.getItem('sort') == 1) {
-        setPrimary(btn_desc, btn_asc);
+    constructor(taskController, storage, btnAsc = ".btn_sort_asc", btnDesc = ".btn_sort_desc") {
+        this.storage = storage;
+        this.taskController = taskController;
+        this.btnAsc = document.querySelector(btnAsc);
+        this.btnDesc = document.querySelector(btnDesc);
+        this.sortTasks(this.storage.getStorageSorting());
+        this.btnAsc.addEventListener("click", () => this.sortClickHandler(0));
+        this.btnDesc.addEventListener("click", () => this.sortClickHandler(1));
     }
-}
 
-btn_asc.addEventListener("click", () => {
-
-    localStorage.setItem('sort', 0);
-
-    showTasks = getTasksToShow(tasks);
-
-    renderTasks(showTasks);
-
-    setPrimary(btn_asc, btn_desc);
-});
-
-btn_desc.addEventListener("click", () => {
-
-    localStorage.setItem('sort', 1);
-
-    showTasks = getTasksToShow(tasks);
-
-    renderTasks(showTasks);
-
-    setPrimary(btn_desc, btn_asc);
-});
-
-
-
-function getTasksToShow(arr) {
-    if (localStorage.getItem("sort") == 0) {
-        return arr.sort(sortByDateAsc);
+    sortClickHandler = (sort) => {
+        this.storage.setStorageSorting(sort);
+        this.sortTasks(sort)
     }
-    return arr.sort(sortByDateDesc);
-}
 
+    sortTasks = (sort) => {
+        this.taskController.renderTasks(sort);
+        this.changeSortButton(sort);
+    }
 
+    changeSortButton = (sort) => {
+        if (!sort) {
+            this._tooglePrimaryBtn(this.btnAsc, this.btnDesc);
+        } else {
+            this._tooglePrimaryBtn(this.btnDesc, this.btnAsc);
+        }
+    }
 
-function sortByDateAsc(a, b) {
-    return new Date(b.date) - new Date(a.date);
-};
+    _tooglePrimaryBtn = (btn_primary, btn_secondary) => {
+        btn_primary.classList.remove("btn-secondary");
+        btn_primary.classList.add("btn-primary");
 
-function sortByDateDesc(a, b) {
-    return new Date(a.date) - new Date(b.date);
-};
-
-
-function setPrimary(btn_primary, btn_secondary) {
-    btn_primary.classList.remove("btn-secondary");
-    btn_primary.classList.add("btn-primary");
-
-    btn_secondary.classList.remove("btn-primary");
-    btn_secondary.classList.add("btn-secondary");
+        btn_secondary.classList.remove("btn-primary");
+        btn_secondary.classList.add("btn-secondary");
+    }
 }
